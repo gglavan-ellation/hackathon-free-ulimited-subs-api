@@ -1,13 +1,13 @@
 const { Router } = require("express");
 
 const {
+  createReferral,
   getActiveReferees,
-  getReferralPoints,
 } = require("../controllers/referral");
 
 const router = Router();
 
-router.get("/referral/list", getActiveReferees);
-router.get("/referral/points", getReferralPoints);
+router.post("/referral/new", createReferral);
+router.get("/referral/:code", getActiveReferees);
 
 module.exports = router;
