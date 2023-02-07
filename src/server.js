@@ -17,6 +17,12 @@ app.use(express.json());
 app.use(morgan("dev"));
 app.use(router);
 app.use("/health", healthCheck());
+app.use(
+  "/.well-known/pki-validation/E94F136A8632D66044782868CF8F1973.txt",
+  express.static(__dirname + "/cert/cert.txt")
+);
+
+console.log(__dirname + "/cert/cert.txt");
 
 const server = app.listen(process.env.PORT, async () => {
   try {
