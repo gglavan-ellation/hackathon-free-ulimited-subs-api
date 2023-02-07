@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
+const healthCheck = require("express-healthcheck");
 
 const router = require("./router");
 const logger = require("./utils/logger");
@@ -13,6 +14,7 @@ dotenv.config();
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(router);
+app.use("/health", healthCheck());
 
 const server = app.listen(process.env.PORT, async () => {
   try {

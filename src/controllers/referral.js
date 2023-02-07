@@ -10,6 +10,9 @@ const createReferral = async (req, res) => {
     const referral = await ReferralModel.create({ code: username });
 
     if (code) {
+      referral.coins += 1;
+
+      await referral.save();
       await ReferralModel.updateOne(
         { code },
         { $push: { referees: referral._id } }
