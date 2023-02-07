@@ -1,6 +1,7 @@
 const { StatusCodes } = require("http-status-codes");
 
 const ReferralModel = require("../models/referral");
+const logger = require("../utils/logger");
 
 const createReferral = async (req, res) => {
   const { username, code } = req.body;
@@ -17,7 +18,7 @@ const createReferral = async (req, res) => {
 
     res.sendStatus(StatusCodes.OK);
   } catch (e) {
-    console.log("Error:", e.message);
+    logger.error(e.message);
   }
 };
 
@@ -31,7 +32,7 @@ const getActiveReferees = async (req, res) => {
 
     res.json(user);
   } catch (e) {
-    console.log("Error:", e.message);
+    logger.error(e.message);
   }
 };
 
