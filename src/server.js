@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 const healthCheck = require("express-healthcheck");
+const cors = require("cors");
 
 const router = require("./router");
 const logger = require("./utils/logger");
@@ -11,6 +12,7 @@ const app = express();
 
 dotenv.config();
 
+app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(router);
