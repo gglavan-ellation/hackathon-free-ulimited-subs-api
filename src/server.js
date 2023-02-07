@@ -22,17 +22,14 @@ const server = app.listen(process.env.PORT, async () => {
       `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.orq0g0n.mongodb.net/?retryWrites=true&w=majority`
     );
 
-    logger.info(`Server listening on port ${process.env.PORT}`);
+    logger.info(`Server listening on port: ${process.env.PORT}`);
   } catch (e) {
     logger.error(e.message);
     process.exit(1);
   }
 });
 
-const gracefulShutdown = () => {
+process.on("SIGINT", () => {
   mongoose.disconnect(() => logger.info("Database disconnect"));
   server.close(() => logger.info("Server shutdown"));
-};
-
-process.on("SIGTERM", gracefulShutdown);
-process.on("SIGINT", gracefulShutdown);
+});
