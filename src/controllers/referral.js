@@ -1,7 +1,8 @@
 const { StatusCodes } = require("http-status-codes");
 
-const ReferralModel = require("../models/referral");
 const logger = require("../utils/logger");
+const ReferralModel = require("../models/referral");
+const { getSubscriptionReward } = require("../helpers/subscription");
 
 const createReferral = async (req, res) => {
   const { username, code } = req.body;
@@ -32,13 +33,27 @@ const getReferral = async (req, res) => {
   try {
     const referral = await ReferralModel.findOne({ code })
       .select("code -_id referees coins referredBy")
-      .populate("referees");
+      .populate({
+        path: "referees",
+        populate: {
+          path: "subscriptions",
+          options: {
+            sort: { createdAt: -1 },
+            limit: 1,
+          },
+        },
+      });
+
+    const referees = referral.referees.map((referee) => ({
+      username: referee.code,
+      income: getSubscriptionReward(referee.subscriptions[0].subscriptionType),
+    }));
 
     res.json({
       code: referral.code,
       coins: referral.coins,
       referredBy: referral.referredBy,
-      referees: referral.referees.map((referee) => referee.code),
+      referees,
     });
   } catch (e) {
     logger.error(e.message);
