@@ -11,6 +11,7 @@ const createReferral = async (req, res) => {
 
     if (code) {
       referral.coins += 1;
+      referral.referredBy = code;
 
       await referral.save();
       await ReferralModel.updateOne(
@@ -25,15 +26,15 @@ const createReferral = async (req, res) => {
   }
 };
 
-const getActiveReferees = async (req, res) => {
+const getReferral = async (req, res) => {
   const { code } = req.params;
 
   try {
-    const user = await ReferralModel.findOne({ code })
-      .select("code -_id referees coins")
+    const referral = await ReferralModel.findOne({ code })
+      .select("code -_id referees coins referredBy")
       .populate("referees.code");
 
-    res.json(user);
+    res.json(referral);
   } catch (e) {
     logger.error(e.message);
   }
@@ -41,5 +42,5 @@ const getActiveReferees = async (req, res) => {
 
 module.exports = {
   createReferral,
-  getActiveReferees,
+  getReferral,
 };

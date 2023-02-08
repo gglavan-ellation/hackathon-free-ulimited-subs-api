@@ -9,6 +9,7 @@ const ReferralSchema = new mongoose.Schema({
       ref: "Referral",
     },
   ],
+  referredBy: { type: String, default: null },
 });
 
 module.exports = mongoose.model("Referral", ReferralSchema);
