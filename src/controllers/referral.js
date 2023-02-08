@@ -38,7 +38,7 @@ const getReferral = async (req, res) => {
       code: referral.code,
       coins: referral.coins,
       referredBy: referral.referredBy,
-      referrers: referral.referees.map((referee) => referee.code),
+      referees: referral.referees.map((referee) => referee.code),
     });
   } catch (e) {
     logger.error(e.message);
