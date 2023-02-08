@@ -32,9 +32,14 @@ const getReferral = async (req, res) => {
   try {
     const referral = await ReferralModel.findOne({ code })
       .select("code -_id referees coins referredBy")
-      .populate("referees.code");
+      .populate("referees");
 
-    res.json(referral);
+    res.json({
+      code: referral.code,
+      coins: referral.coins,
+      referredBy: referral.referredBy,
+      referrers: referral.referees.map((referee) => referee.code),
+    });
   } catch (e) {
     logger.error(e.message);
   }
