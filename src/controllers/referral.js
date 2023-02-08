@@ -32,7 +32,8 @@ const getReferral = async (req, res) => {
 
   try {
     const referral = await ReferralModel.findOne({ code })
-      .select("code -_id referees coins referredBy")
+      .select("code -_id referees coins referredBy subscriptions")
+      .populate("subscriptions")
       .populate({
         path: "referees",
         populate: {
@@ -54,6 +55,7 @@ const getReferral = async (req, res) => {
       coins: referral.coins,
       referredBy: referral.referredBy,
       referees,
+      isPremium: !!referral.subscriptions.length,
     });
   } catch (e) {
     logger.error(e.message);
