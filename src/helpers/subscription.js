@@ -7,8 +7,8 @@ const SUBSCRIPTION_TYPES_PRICES = {
 };
 
 const SUBSCRIPTION_TYPES_REWARD = {
-  FAN: 0.25,
-  MEGA_FAN: 0.5,
+  FAN: 1,
+  MEGA_FAN: 1,
   ULTIMATE_FAN: 1,
 };
 

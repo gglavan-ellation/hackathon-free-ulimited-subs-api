@@ -47,7 +47,9 @@ const getReferral = async (req, res) => {
 
     const referees = referral.referees.map((referee) => ({
       username: referee.code,
-      income: getSubscriptionReward(referee.subscriptions[0].subscriptionType),
+      income: referee.subscriptions[0]?.subscriptionType
+        ? getSubscriptionReward(referee.subscriptions[0].subscriptionType)
+        : 0,
     }));
 
     res.json({
